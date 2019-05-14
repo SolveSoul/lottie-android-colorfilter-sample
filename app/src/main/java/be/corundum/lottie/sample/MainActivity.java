@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     public ColorFilter getValue(LottieFrameInfo<ColorFilter> frameInfo) {
                         return null;
                     }
-                });
+                }
+        );
     }
 }
