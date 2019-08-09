@@ -3,6 +3,8 @@
     <string name="action_original">Original</string>
     <string name="action_apply_for_layer">Apply for layer</string>
     <string name="action_apply_full">Apply full</string>
+    <string name="action_animate">Animate color change</string>
     <string name="state_layer_only">Only color one layer</string>
     <string name="state_full">Overlay color fully</string>
+    <string name="state_animate">Animate color change</string>
 </resources>

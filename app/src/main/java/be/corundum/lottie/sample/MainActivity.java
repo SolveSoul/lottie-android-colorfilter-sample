@@ -16,14 +16,19 @@ import com.airbnb.lottie.value.SimpleLottieValueCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.core.graphics.ColorUtils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private AppCompatButton originalButton;
     private AppCompatButton partialButton;
     private AppCompatButton fullButton;
+    private AppCompatButton animateButton;
     private LottieAnimationView animationView;
     private AppCompatTextView stateText;
+
+    private final int frames = 9;
+    private int currentAnimationFrame = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,12 +38,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         originalButton = findViewById(R.id.action_original);
         partialButton = findViewById(R.id.action_layer_only);
         fullButton = findViewById(R.id.action_full);
+        animateButton = findViewById(R.id.action_animate);
         animationView = findViewById(R.id.animation_view);
         stateText = findViewById(R.id.state_label);
 
         originalButton.setOnClickListener(this);
         partialButton.setOnClickListener(this);
         fullButton.setOnClickListener(this);
+        animateButton.setOnClickListener(this);
 
         playOriginal();
     }
@@ -54,6 +61,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.action_full:
                 playFull();
+                break;
+            case R.id.action_animate:
+                playColorAnimation();
                 break;
         }
     }
@@ -96,7 +106,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         stateText.setText(R.string.state_full);
     }
 
+    private void playColorAnimation() {
+        resetAnimationView();
+        animationView.addValueCallback(
+                new KeyPath("**"),
+                LottieProperty.COLOR_FILTER,
+                new SimpleLottieValueCallback<ColorFilter>() {
+                    @Override
+                    public ColorFilter getValue(LottieFrameInfo<ColorFilter> frameInfo) {
+
+                        // frameInfo.getOverallProgress() returns 0 for some reason, we'll calculate the progress manually
+                        // int redValue = Math.round(frameInfo.getOverallProgress() * 100 / 255);
+
+                        currentAnimationFrame++;
+                        int currentProgress = currentAnimationFrame * 100 / frames;
+                        int color = ColorUtils.blendARGB(Color.YELLOW, Color.RED, currentProgress);
+
+                        return new PorterDuffColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+                    }
+                }
+        );
+        animationView.playAnimation();
+        stateText.setText(R.string.state_animate);
+    }
+
     private void resetAnimationView() {
+        currentAnimationFrame = 0;
         animationView.addValueCallback(new KeyPath("**"), LottieProperty.COLOR_FILTER,
                 new SimpleLottieValueCallback<ColorFilter>() {
                     @Override

@@ -31,6 +31,13 @@
         android:contentDescription="@string/action_apply_full"
         android:text="@string/action_apply_full" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/action_animate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/action_animate"
+        android:text="@string/action_animate" />
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/state_label"
         android:layout_width="match_parent"
